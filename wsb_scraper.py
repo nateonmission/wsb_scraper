@@ -15,18 +15,23 @@ submissions = api.search_submissions(
                             after=start_time,
                             subreddit='wallstreetbets',
                             filter=['url', 'created_utc', 'author','title', 'selftext'],
-                            limit=100)
+                            limit=500)
 
-
+cashtag_list = []
 for submission in submissions:
+
     title_words = submission['title'].split()
     post_words = []
     if 'selftext' in submission:
         post_words = submission['selftext'].split()
     
-    cashtags = list(set(filter(lambda word: word.lower().startswith('$') and not word[1:2].isdigit() , title_words)))
-    cashtags += list(set(filter(lambda word: word.lower().startswith('$') and not word[1:2].isdigit(), post_words)))
+    cashtags = list(set(filter(lambda word: word.startswith('$') and not word[1:2].isdigit() , title_words)))
+    cashtags += list(set(filter(lambda word: word.startswith('$') and not word[1:2].isdigit(), post_words)))
+
     if len(cashtags) > 0:
-        print(cashtags)
-        print(submission['title'])
-        print('----------')
+        for cashtag in cashtags:
+            if cashtag.lower() not in cashtag_list:
+                cashtag = re.sub(r'[^\w\s]', '', cashtag)
+                cashtag_list.append(cashtag.lower())
+print(cashtag_list)
+
