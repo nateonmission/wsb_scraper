@@ -30,8 +30,8 @@ for submission in submissions:
 
     if len(cashtags) > 0:
         for cashtag in cashtags:
-            if cashtag.lower() not in cashtag_list:
-                cashtag = re.sub(r'[^\w\s]', '', cashtag)
+            cashtag = re.sub(r'[^\w\s]', '', cashtag)
+            if cashtag.lower() not in cashtag_list and cashtag != '':
                 cashtag_list.append(cashtag.lower())
 print(cashtag_list)
 
